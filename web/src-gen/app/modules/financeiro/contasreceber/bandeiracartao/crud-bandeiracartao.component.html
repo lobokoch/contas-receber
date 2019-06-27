@@ -1,0 +1,55 @@
+<!--
+**********************************************************************************************
+Code generated with MKL Plug-in version: 5.3.2
+Code generated at time stamp: 2019-06-27T20:26:04.799
+Copyright: Kerubin - logokoch@gmail.com
+
+WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CODE GENERATION.
+***********************************************************************************************
+-->
+
+<div class="container">
+	<p-card>
+		<p-header>
+			<div class="kb-card-header">{{ getTranslation('financeiro.contas_receber.bandeiraCartao') }}</div>
+		</p-header>
+	
+
+  <form #form1="ngForm" (ngSubmit)="save(form1.form)">
+  	<div class="ui-g">
+  	
+		<div class="ui-g-12 ui-fluid hidden">
+			<label for="id" class="hidden">{{ getTranslation('financeiro.contas_receber.bandeiraCartao_id') }}</label>
+			<input type="hidden" pInputText #id="ngModel" ngModel [(ngModel)]="bandeiraCartao.id" name="id" readonly class="read-only">
+		</div>
+		
+		<div class="ui-g-12 ui-fluid ui-md-12">
+			<label for="nomeBandeira">{{ getTranslation('financeiro.contas_receber.bandeiraCartao_nomeBandeira') }}<span class="kb-label-required">*</span></label>
+			<input type="text" pInputText appFocus #nomeBandeira="ngModel" ngModel [(ngModel)]="bandeiraCartao.nomeBandeira" name="nomeBandeira" required>
+			<div class="invalid-message" *ngIf="nomeBandeira.invalid && nomeBandeira.dirty">Campo obrigatório.</div>
+		</div>
+		
+		<div class="ui-g-12 ui-fluid hidden">
+			<label style="display: block" for="deleted" class="hidden">{{ getTranslation('financeiro.contas_receber.bandeiraCartao_deleted') }}</label>
+			<p-inputSwitch #deleted="ngModel" ngModel [(ngModel)]="bandeiraCartao.deleted" name="deleted"></p-inputSwitch>
+		</div>
+		
+		<div class="ui-g-12">
+			<div class="ui-g-12 ui-md-2 ui-fluid">
+				<button class="botao-margem-direita" pButton type="submit" label="Salvar"></button>
+			</div>
+			<div class="ui-g-12 ui-md-2 ui-fluid">
+				<button pButton (click)="begin(form1)" type="button" label="Novo"></button>
+			</div>
+			<div class="ui-g-12 ui-md-2 ui-fluid">
+				<a routerLink="/bandeiracartao" pButton label="Pesquisar"></a>
+			</div>
+		</div>
+		
+	
+	</div>
+  </form>
+  
+  </p-card>
+  
+</div>
