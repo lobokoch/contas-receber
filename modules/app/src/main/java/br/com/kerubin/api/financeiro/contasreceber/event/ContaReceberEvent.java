@@ -14,6 +14,8 @@ import br.com.kerubin.api.financeiro.contasreceber.FormaPagamento;
 public class ContaReceberEvent implements DomainEvent {
 	
 	public static final String CONTA_RECEBER_CONTAPAGA = "contaReceberContaPaga";
+	public static final String CONTA_RECEBER_CONTAESTORNADA = "contaReceberContaEstornada";
+	
 	private java.util.UUID id;
 	
 	private java.util.UUID planoContas;

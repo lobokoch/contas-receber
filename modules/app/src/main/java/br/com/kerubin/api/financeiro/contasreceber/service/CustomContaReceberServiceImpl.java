@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.kerubin.api.database.core.ServiceContext;
 import br.com.kerubin.api.financeiro.contasreceber.FinanceiroContasReceberConstants;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberEntity;
-import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberRepository;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberServiceImpl;
 import br.com.kerubin.api.financeiro.contasreceber.event.ContaReceberEvent;
 import br.com.kerubin.api.messaging.core.DomainEntityEventsPublisher;
@@ -27,9 +26,6 @@ public class CustomContaReceberServiceImpl extends ContaReceberServiceImpl {
 	@Autowired
 	private DomainEntityEventsPublisher publisher;
 	
-	@Autowired
-	private ContaReceberRepository contaReceberRepository;
-	
 	@Transactional
 	@Override
 	public void actionBaixarContaComUmClique(UUID id) {
@@ -38,14 +34,26 @@ public class CustomContaReceberServiceImpl extends ContaReceberServiceImpl {
 		super.actionBaixarContaComUmClique(id);
 		
 		// Busca a conta atualziada
-		ContaReceberEntity entity = contaReceberRepository.findById(id).orElse(null);
+		ContaReceberEntity entity = getContaReceberEntity(id);
 		
 		// Publica a mensagem de conta paga
-		if (entity != null && entity.getDataPagamento() != null) {
+		if (entity.getDataPagamento() != null) {
 			publishEvent(entity, ContaReceberEvent.CONTA_RECEBER_CONTAPAGA);
-			
 		}
 		
+	}
+	
+	@Transactional
+	@Override
+	public void actionEstornarRecebimentoContaComUmClique(UUID id) {
+		// Pega o valor antes de estornar.
+		ContaReceberEntity entity = getContaReceberEntity(id).clone();
+		
+		// Estorna
+		super.actionEstornarRecebimentoContaComUmClique(id);
+		
+		// Pública estorno
+		publishEvent(entity, ContaReceberEvent.CONTA_RECEBER_CONTAESTORNADA);
 	}
 	
 	protected void publishEvent(ContaReceberEntity entity, String eventName) {
