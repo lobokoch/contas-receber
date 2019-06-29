@@ -2,7 +2,7 @@
 domain financeiro
 
 @label("Contas a receber")
-service contas_receber { //xxxxx
+service contas_receber { //xxxx
 	
 	
 	config {
@@ -63,7 +63,7 @@ service contas_receber { //xxxxx
 		
 		formaPagamento: FormaPagamento
 		label: "Forma de pagamento"
-		web(styleClass: "ui-md-8")
+		web(styleClass: "ui-md-2")
 		publishedInEvents
 		//--
 				
@@ -71,19 +71,19 @@ service contas_receber { //xxxxx
 		//--
 		contaBancaria: refers ContaBancaria? manyToOne 
 		grid(hidden)
-		label: "Pagamento com conta bancária"
-		web(styleClass: "ui-md-4")
+		label: "Dados da conta bancária"
+		web(styleClass: "ui-md-6")
 		publishedInEvents
 		
 		cartaoCredito: refers CartaoCredito? manyToOne
-		label: "Pagamento com cartão de crédito"
+		label: "Dados do cartão de crédito"
 		grid(hidden)
-		web(styleClass: "ui-md-4")
+		web(styleClass: "ui-md-6")
 		publishedInEvents
 		
 		outrosDescricao: string?
-		label: "Pagamento com  outra forma de pagamento"
-		web(styleClass: "ui-md-4")
+		label: "Dados complementares"
+		web(styleClass: "ui-md-6")
 		grid(hidden)
 		//--
 		
@@ -148,6 +148,10 @@ service contas_receber { //xxxxx
 		web(styleClass: "ui-md-4")
 		
 		rules {
+			with(contaBancaria).apply(styleClass:"hidden").when(formaPagamento.isNotEquals(FormaPagamento.CONTA_BANCARIA))
+			with(cartaoCredito).apply(styleClass:"hidden").when(formaPagamento.isNotEquals(FormaPagamento.CARTAO_CREDITO))
+			with(outrosDescricao).apply(styleClass:"hidden").when(formaPagamento.isEquals(FormaPagamento.CONTA_BANCARIA) or formaPagamento.isEquals(FormaPagamento.CARTAO_CREDITO) )
+			
 			// Destaca o estado de vencimento das contas a receber.
 			// Destaca as contas vencidas
 			with(grid.rows).apply(styleClass: "kb-conta-vencida" label: "Conta vencida").when(dataPagamento.isNull and dataVencimento.isBefore(today))
@@ -372,10 +376,16 @@ service contas_receber { //xxxxx
 		default
 		
 		CONTA_BANCARIA
-		label: "Conta bancária"
+		label: "Débito em conta"
 		
 		CARTAO_CREDITO
 		label: "Cartão de crédito"
+		
+		VALE_REFEICAO
+		label: "Vale refeição"
+		
+		VALE_ALIMENTACAO
+		label: "Vale alimentação"
 		
 		CHEQUE
 		label: "Cheque"
