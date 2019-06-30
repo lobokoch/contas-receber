@@ -2,7 +2,7 @@
 domain financeiro
 
 @label("Contas a receber")
-service contas_receber { //xxxx
+service contas_receber { //xxxxx
 	
 	
 	config {
@@ -184,16 +184,17 @@ service contas_receber { //xxxx
 	@externalEntity
 	@subscribe(domain= cadastros, service=cliente, events=[created, updated, deleted])
 	@label("Cliente")
-	entity Cliente {		
+	entity Cliente {
+		
+		tipoPessoa: TipoPessoa?
 		
 		nome: string
 		label: "Nome"
 		listFilter(many: "Nome do cliente")
-		web(styleClass: "ui-md-6")
 		
-		cpfCNPJ: string?
-		label: "Documento (CPF/CNPJ)"
-		web(styleClass: "ui-md-6")
+		cnpjCPF: string?
+		label: "Documento (CNPJ/CPF)"		
+		
 	}
 	
 	@externalEntity
@@ -429,4 +430,15 @@ service contas_receber { //xxxx
 		DESPESA
 		label: "Despesa"
 	}
+	
+	@label("Tipo da pessoa")
+	enum TipoPessoa {		
+		PESSOA_JURIDICA
+		label: "Pessoa jurídica"
+		default
+		
+		PESSOA_FISICA
+		label: "Pessoa física"
+	}
+	
 }
