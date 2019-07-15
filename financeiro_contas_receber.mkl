@@ -2,7 +2,7 @@
 domain financeiro
 
 @label("Contas a receber")
-service contas_receber { //xxxxx
+service contas_receber { //xxx
 	
 	
 	config {
@@ -337,7 +337,7 @@ service contas_receber { //xxxxx
 		
 		codigo: string
 		label: "Código"
-		autoComplete(sort:asc)
+		autoComplete(data sort:asc)
 		web(styleClass: "ui-md-2")
 		listFilter(many: "Códigos")
 		
