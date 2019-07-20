@@ -1,11 +1,15 @@
 package br.com.kerubin.api.financeiro.contasreceber.service;
 
+import static br.com.kerubin.api.servicecore.util.CoreUtils.isNotEmpty;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,14 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Coalesce;
 import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import br.com.kerubin.api.financeiro.contasreceber.model.ContasReceberHojeResumo;
+import br.com.kerubin.api.financeiro.contasreceber.model.ContasReceberHojeResumoCompleto;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.QContaReceberEntity;
 import br.com.kerubin.api.financeiro.contasreceber.model.ContasReceberSituacaoDoAnoSum;
 import br.com.kerubin.api.financeiro.contasreceber.model.MonthlySum;
@@ -237,6 +246,73 @@ public class ContasRecerDashboardServiceImpl implements ContasReceberDashboardSe
 		result.add(valorPagoMesAnterior);
 		
 		return result;
+}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public List<ContasReceberHojeResumo> getContasReceberHojeResumo() {
+		
+		LocalDate today = LocalDate.now();
+		DatePath<LocalDate> dataVencimento = qContaReceber.dataVencimento;
+		BooleanExpression dataPagamentoIsNull = qContaReceber.dataPagamento.isNull();
+		
+		QContaReceberEntity qContaReceber = QContaReceberEntity.contaReceberEntity;
+		JPAQueryFactory query = new JPAQueryFactory(em);
+		
+		// DateOperation<Long> diasEmAtraso = Expressions.dateOperation(Long.class, Ops.DateTimeOps.DIFF_DAYS, DateTimeExpression.currentDate(), qContaReceber.dataVencimento);
+		
+		Expression<Long> diasEmAtraso = Expressions.as(Expressions.constant(0L), "diasEmAtraso");
+		
+		JPAQuery<ContasReceberHojeResumo> projection = query.select(
+				Projections.bean(ContasReceberHojeResumo.class,
+				qContaReceber.id, 
+				qContaReceber.descricao, 
+				qContaReceber.dataVencimento,
+				diasEmAtraso,
+				//diasEmAtraso.as("diasEmAtraso"),
+				qContaReceber.valor
+				))
+		.from(qContaReceber)
+		.where(dataVencimento.lt(today).and(dataPagamentoIsNull))
+		.orderBy(qContaReceber.valor.desc(), qContaReceber.dataVencimento.asc());
+		
+		List<ContasReceberHojeResumo> queryResult = projection.fetch();
+		
+		if (isNotEmpty(queryResult)) {
+			queryResult = queryResult.stream().peek(this::computarDiasEmAtraso).collect(Collectors.toList());
+		}
+		
+		
+		return queryResult;
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public ContasReceberHojeResumoCompleto getContasReceberHojeResumoCompleto() {
+		
+		ContasReceberHojeResumoCompleto result = new ContasReceberHojeResumoCompleto();
+		
+		List<ContasReceberHojeResumo> contasPagarHojeResumo = getContasReceberHojeResumo();
+		BigDecimal totalContasReceberHoje = contasPagarHojeResumo.stream()
+				.map(ContasReceberHojeResumo::getValor)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		result.setContasReceberHojeResumo(contasPagarHojeResumo);
+		result.setContasReceberHojeResumoSum(totalContasReceberHoje);
+		result.setContasReceberSituacaoDoAnoSum(getContasReceberSituacaoDoAno());
+		
+		return result;		
+	}
+	
+	private ContasReceberHojeResumo computarDiasEmAtraso(ContasReceberHojeResumo item) {
+		if (isNotEmpty(item)) {
+			LocalDate today = LocalDate.now();
+			Long diasEmAtraso = ChronoUnit.DAYS.between(item.getDataVencimento(), today);
+			item.setDiasEmAtraso(diasEmAtraso);
+		}
+		
+		return item;
+			
 	}
 
 }
