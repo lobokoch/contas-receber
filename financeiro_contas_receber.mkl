@@ -186,7 +186,7 @@ service contas_receber { //xxx
 	@label("Cliente")
 	entity Cliente {
 		
-		tipoPessoa: TipoPessoa?
+		tipoPessoa: TipoPessoa
 		
 		nome: string
 		label: "Nome"
