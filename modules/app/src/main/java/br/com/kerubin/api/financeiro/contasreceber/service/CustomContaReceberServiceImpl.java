@@ -6,9 +6,7 @@ import static br.com.kerubin.api.servicecore.util.CoreUtils.isNotEmpty;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -17,8 +15,6 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +27,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import br.com.kerubin.api.database.core.ServiceContext;
 import br.com.kerubin.api.financeiro.contasreceber.FinanceiroContasReceberConstants;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberEntity;
-import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberListFilter;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberServiceImpl;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaAutoComplete;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaAutoCompleteImpl;
-import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaEntity;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.QPlanoContaEntity;
 import br.com.kerubin.api.financeiro.contasreceber.event.ContaReceberEvent;
 import br.com.kerubin.api.messaging.core.DomainEntityEventsPublisher;
@@ -57,40 +51,6 @@ public class CustomContaReceberServiceImpl extends ContaReceberServiceImpl {
 	
 	@PersistenceContext
 	private EntityManager em;
-	
-	
-	///// Begin custom for plano de contas
-	@Transactional(readOnly = true)
-	@Override
-	public Page<ContaReceberEntity> list(ContaReceberListFilter contaReceberListFilter, Pageable pageable) {
-		Page<ContaReceberEntity> result = super.list(contaReceberListFilter, pageable);
-		
-		if (isNotEmpty(result)) {
-			Map<UUID, PlanoContaEntity> planosVisitados = new HashMap<>();
-			result.forEach(item -> {
-				PlanoContaEntity planoContas = item.getPlanoContas();
-				if (isNotEmpty(planoContas)) {
-					UUID id = planoContas.getId();
-					if (!planosVisitados.containsKey(id)) {
-						decoratePlanoContas(item.getPlanoContas());
-						planosVisitados.put(id, planoContas);
-					}
-				}
-			});
-		}
-		
-		return result;
-	}
-	
-	@Transactional(readOnly = true)
-	@Override
-	public ContaReceberEntity read(UUID id) {
-		ContaReceberEntity result = super.read(id);
-		if (isNotEmpty(result)) {
-			decoratePlanoContas(result.getPlanoContas());
-		}
-		return result;
-	}
 	
 	@Override
 	public Collection<PlanoContaAutoComplete> planoContaPlanoContasAutoComplete(String query) {
@@ -151,7 +111,6 @@ public class CustomContaReceberServiceImpl extends ContaReceberServiceImpl {
 		return items;
 	}
 	
-	///// End custom for plano de contas
 	
 	@Transactional
 	@Override
@@ -252,17 +211,6 @@ public class CustomContaReceberServiceImpl extends ContaReceberServiceImpl {
 		catch (Exception e) {
 			log.error("Error publishing event: " + eventName + ", entity: " + entity);
 		}
-	}
-	
-	private void decoratePlanoContas(PlanoContaEntity planoContas) {
-		if (isNotEmpty(planoContas)) { // Adjusts the field descricao of plano de contas and plano de contas pai.
-			String descricao = planoContas.getCodigo() + " - " + planoContas.getDescricao();
-			PlanoContaEntity planoContasPai = planoContas.getPlanoContaPai();
-			if (isNotEmpty(planoContasPai)) {
-				descricao = planoContasPai.getCodigo() + " - " + planoContasPai.getDescricao() + " / " + descricao;
-			}
-			planoContas.setDescricao(descricao);
-		} 
 	}
 	
 	private int codigoToInt(Object toOrderObj) {
