@@ -170,8 +170,24 @@ service contas_receber { //xxx
 			with(grid.rows).apply(styleClass: "kb-conta-paga"  label: "Conta paga").when(dataPagamento.isNotNull)
 		
 			with(grid.sumRow.lastCell).apply((valor - valorPago)) // xx
-			with(grid.actions).apply(dataPagamento = today, valorPago = valor).when(dataPagamento.isNull).action(name: baixarContaComUmClique button(tooltip: "Baixar conta com um clique" icon: "pi pi-arrow-down"))
-			with(grid.actions).apply(dataPagamento = null, valorPago = null).when(dataPagamento.isNotNull).action(name: estornarRecebimentoContaComUmClique button(tooltip: "Estornar recebimento com um clique" icon: "pi pi-arrow-up"))
+			
+			// Action: Baixar conta com data de pagamento igual a data de hoje
+			with(grid.actions)
+			.apply(dataPagamento = today, valorPago = valor)
+			.when(dataPagamento.isNull)
+			.action(name: baixarContaComDataPagamentoHoje button(tooltip: "Baixar a conta com a data de pagamento igual a data de hoje" icon: "pi pi-clock"))
+			
+			// Action: Baixar conta com data de pagamento igual a data de vencimento
+			with(grid.actions)
+			.apply(dataPagamento = dataVencimento, valorPago = valor)
+			.when(dataPagamento.isNull and dataVencimento.isBefore(today))
+			.action(name: baixarContaComDataPagamentoIgualDataVenciento button(tooltip: "Baixar a conta com a data de pagamento igual a data de vencimento" icon: "pi pi-calendar"))
+			
+			// Action: Estorna conta baixada
+			with(grid.actions)
+			.apply(dataPagamento = null, valorPago = null)
+			.when(dataPagamento.isNotNull)
+			.action(name: estornarRecebimentoContaComUmClique button(tooltip: "Estornar recebimento da conta" icon: "pi pi-arrow-up"))
 			
 			with(form)
 				.apply(makeCopies(title: "Gerar cópias da conta" referenceField: dataVencimento grouperField: agrupador))

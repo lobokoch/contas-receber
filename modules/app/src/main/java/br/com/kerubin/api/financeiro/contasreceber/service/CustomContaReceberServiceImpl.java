@@ -147,11 +147,25 @@ public class CustomContaReceberServiceImpl extends ContaReceberServiceImpl {
 	
 	@Transactional
 	@Override
-	public void actionBaixarContaComUmClique(UUID id) {
+	public void actionBaixarContaComDataPagamentoIgualDataVenciento(UUID id) {
 		
 		// Baixa a conta
-		super.actionBaixarContaComUmClique(id);
+		super.actionBaixarContaComDataPagamentoIgualDataVenciento(id);
 		
+		publicarContaPaga(id);
+	}
+	
+	@Transactional
+	@Override
+	public void actionBaixarContaComDataPagamentoHoje(UUID id) {
+		
+		// Baixa a conta
+		super.actionBaixarContaComDataPagamentoHoje(id);
+		
+		publicarContaPaga(id);
+	}
+	
+	private void publicarContaPaga(UUID id) {
 		// Busca a conta atualziada
 		ContaReceberEntity entity = getContaReceberEntity(id);
 		
