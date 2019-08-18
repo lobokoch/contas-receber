@@ -2,7 +2,7 @@
 domain financeiro
 
 @label("Contas a receber")
-service contas_receber { //xxx
+service contas_receber { //xx
 	
 	
 	config {
