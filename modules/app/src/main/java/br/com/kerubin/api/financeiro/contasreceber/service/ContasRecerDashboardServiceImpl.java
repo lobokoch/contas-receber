@@ -273,7 +273,7 @@ public class ContasRecerDashboardServiceImpl implements ContasReceberDashboardSe
 				qContaReceber.valor
 				))
 		.from(qContaReceber)
-		.where(dataVencimento.lt(today).and(dataPagamentoIsNull))
+		.where(dataVencimento.loe(today).and(dataPagamentoIsNull))
 		.orderBy(qContaReceber.valor.desc(), qContaReceber.dataVencimento.asc());
 		
 		List<ContasReceberHojeResumo> queryResult = projection.fetch();
