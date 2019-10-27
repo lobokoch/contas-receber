@@ -2,7 +2,7 @@
 domain financeiro
 
 @label("Contas a receber")
-service contas_receber { //xx
+service contas_receber { //xxxx
 	
 	
 	config {
@@ -137,10 +137,21 @@ service contas_receber { //xx
 		web(styleClass: "ui-md-6")
 		publishedInEvents
 		
+		viaConcBancaria: boolean?
+		label: "Baixado via conc. banc."
+		grid(hidden)
+		web(styleClass: "ui-md-6")
+		
+		numDocConcBancaria: string? 
+		//publishedInEvents
+		label: "Documento da conc. banc."
+		grid(hidden) 
+		web(styleClass: "ui-md-6")
+		
 		observacoes: string[1000]? 
 		label: "Observações"
 		grid(hidden) 
-		web(styleClass: "ui-md-12")
+		web(styleClass: "ui-md-12") ///
 		
 		
 		agrupador: string ? 
@@ -149,7 +160,7 @@ service contas_receber { //xx
 		grid(hidden) 
 		web(styleClass: "ui-md-4")
 		
-		rules {
+		rules {///
 			with(valorPago)
 				.apply(equation(valor - valorDesconto + valorMulta + valorJuros + valorAcrescimos))
 				.when(dataPagamento.isNotNull)
