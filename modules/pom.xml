@@ -140,6 +140,7 @@
 				<version>${cadastros.cliente.client.version}</version>
 			</dependency>
 			<!-- End Entity Dependencies -->
+			
 		</dependencies>
 	</dependencyManagement>
 	<build>

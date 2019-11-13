@@ -23,5 +23,13 @@ public class ConciliacaoBancariaController {
 		return ResponseEntity.ok(result);
 	}
 	
+	@PostMapping("/aplicarConciliacaoBancaria")
+	// @ApiOperation(value = "Baixa contas relacionadas com transações de conciliação bancária")
+	public ResponseEntity<ConciliacaoBancariaDTO> aplicarConciliacaoBancaria(@RequestBody ConciliacaoBancariaDTO conciliacaoBancariaDTO) {
+		
+		ConciliacaoBancariaDTO result = conciliacaoBancariaService.aplicarConciliacaoBancaria(conciliacaoBancariaDTO);
+		return ResponseEntity.ok(result);
+	}
+	
 
 }

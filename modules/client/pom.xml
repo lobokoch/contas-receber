@@ -25,6 +25,8 @@
     		<groupId>br.com.kerubin.api</groupId>
     		<artifactId>messaging-core</artifactId>
     	</dependency>
+    	<!-- End Entity Dependencies -->
+    					
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
@@ -34,6 +36,8 @@
         	  <artifactId>build-helper-maven-plugin</artifactId>
         	  <version>${build.helper.maven.plugin.version}</version>
         	  <executions>
+        	    
+        	    <!-- src source folder -->
         	    <execution>
         	      <id>add-source</id>
         	      <phase>generate-sources</phase>
@@ -46,6 +50,22 @@
         	        </sources>
         	      </configuration>
         	    </execution>
+        	    
+        	    <!-- src test source folder -->
+        	    <execution>
+        	      <id>add-test-source</id>
+        	      <phase>generate-test-sources</phase>
+        	      <goals>
+        	        <goal>add-test-source</goal>
+        	      </goals>
+        	      <configuration>
+        	        <sources>
+        	          <source>src-gen/test/java/</source>
+        	          <source>src-gen/test/resources/</source>
+        	        </sources>
+        	      </configuration>
+        	    </execution>
+        	    
         	  </executions>
         	</plugin>
         	<plugin>
