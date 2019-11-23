@@ -134,6 +134,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnTipo(TipoTransacao.CREDITO)
 				.trnData(LocalDate.now().minusDays(1))
 				.tituloConciliadoId(contaReceber1.getId())
+				.trnId("00123")
 				.trnDocumento("00123")
 				.trnHistorico("Teste de conciliação 123")
 				.build();
@@ -146,6 +147,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnTipo(TipoTransacao.CREDITO)
 				.trnData(LocalDate.now().minusDays(2))
 				.tituloConciliadoId(contaReceber2.getId())
+				.trnId("00987")
 				.trnDocumento("00987")
 				.trnHistorico("Teste de conciliação 987")
 				.build();
@@ -179,12 +181,13 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getValorPago,
 				ContaReceberEntity::getFormaPagamento,
 				ContaReceberEntity::getContaBancaria,
+				ContaReceberEntity::getIdConcBancaria,
 				ContaReceberEntity::getNumDocConcBancaria,
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(t1.getTrnData(), t1.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t1.getTrnDocumento(), t1.getTrnHistorico()),
-				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnDocumento(), t2.getTrnHistorico())
+				tuple(t1.getTrnData(), t1.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t1.getTrnId(), t1.getTrnDocumento(), t1.getTrnHistorico()),
+				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnId(), t2.getTrnDocumento(), t2.getTrnHistorico())
 				);
 		
 	}
@@ -209,6 +212,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now().minusDays(1))
 				.tituloConciliadoId(unknownId)
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00123")
 				.trnDocumento("00123")
 				.trnHistorico("Teste de conciliação 123")
 				.build();
@@ -222,6 +226,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now().minusDays(2))
 				.tituloConciliadoId(contaReceber2.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00987")
 				.trnDocumento("00987")
 				.trnHistorico("Teste de conciliação 987")
 				.build();
@@ -256,12 +261,13 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getValorPago,
 				ContaReceberEntity::getFormaPagamento,
 				ContaReceberEntity::getContaBancaria,
+				ContaReceberEntity::getIdConcBancaria,
 				ContaReceberEntity::getNumDocConcBancaria,
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,                 null),
-				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnDocumento(), t2.getTrnHistorico())
+				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,          null,                 null),
+				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnId(), t2.getTrnDocumento(), t2.getTrnHistorico())
 				);
 		
 	}
@@ -285,6 +291,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now().minusDays(1))
 				.tituloConciliadoId(contaReceber1.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00123")
 				.trnDocumento("00123")
 				.trnHistorico("Teste de conciliação 123")
 				.build();
@@ -298,6 +305,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now().minusDays(2))
 				.tituloConciliadoId(contaReceber2.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00987")
 				.trnDocumento("00987")
 				.trnHistorico("Teste de conciliação 987")
 				.build();
@@ -331,12 +339,13 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getValorPago,
 				ContaReceberEntity::getFormaPagamento,
 				ContaReceberEntity::getContaBancaria,
+				ContaReceberEntity::getIdConcBancaria,
 				ContaReceberEntity::getNumDocConcBancaria,
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,                 null),
-				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnDocumento(), t2.getTrnHistorico())
+				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,          null,                 null),
+				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnId(), t2.getTrnDocumento(), t2.getTrnHistorico())
 				);
 	}
 	
@@ -359,6 +368,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(null)
 				.tituloConciliadoId(contaReceber1.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00123")
 				.trnDocumento("00123")
 				.trnHistorico("Teste de conciliação 123")
 				.build();
@@ -372,6 +382,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now().minusDays(2))
 				.tituloConciliadoId(contaReceber2.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00987")
 				.trnDocumento("00987")
 				.trnHistorico("Teste de conciliação 987")
 				.build();
@@ -405,12 +416,13 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getValorPago,
 				ContaReceberEntity::getFormaPagamento,
 				ContaReceberEntity::getContaBancaria,
+				ContaReceberEntity::getIdConcBancaria,
 				ContaReceberEntity::getNumDocConcBancaria,
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,                 null),
-				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnDocumento(), t2.getTrnHistorico())
+				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,          null,                 null),
+				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnId(), t2.getTrnDocumento(), t2.getTrnHistorico())
 				);
 	}
 	
@@ -433,6 +445,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now())
 				.tituloConciliadoId(contaReceber1.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00123")
 				.trnDocumento("00123")
 				.trnHistorico("Teste de conciliação 123")
 				.build();
@@ -446,6 +459,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now().minusDays(2))
 				.tituloConciliadoId(contaReceber2.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00987")
 				.trnDocumento("00987")
 				.trnHistorico("Teste de conciliação 987")
 				.build();
@@ -479,12 +493,13 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getValorPago,
 				ContaReceberEntity::getFormaPagamento,
 				ContaReceberEntity::getContaBancaria,
+				ContaReceberEntity::getIdConcBancaria,
 				ContaReceberEntity::getNumDocConcBancaria,
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,                 null),
-				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnDocumento(), t2.getTrnHistorico())
+				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,          null,                 null),
+				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnId(), t2.getTrnDocumento(), t2.getTrnHistorico())
 				);
 	}
 	
@@ -492,6 +507,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 	public void testAplicarConciliacaoBancariaComErroContaJaBaixada() {
 		ContaReceberEntity contaReceber1 = newContaReceber1();
 		contaReceber1.setDataPagamento(LocalDate.now());
+		contaReceber1.setIdConcBancaria("012345");
 		contaReceber1.setNumDocConcBancaria("012345");
 		
 		ContaReceberEntity contaReceber2 = newContaReceber2();
@@ -510,6 +526,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now())
 				.tituloConciliadoId(contaReceber1.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00123")
 				.trnDocumento("00123")
 				.trnHistorico("Teste de conciliação 123")
 				.build();
@@ -523,6 +540,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now().minusDays(2))
 				.tituloConciliadoId(contaReceber2.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00987")
 				.trnDocumento("00987")
 				.trnHistorico("Teste de conciliação 987")
 				.build();
@@ -556,12 +574,13 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getValorPago,
 				ContaReceberEntity::getFormaPagamento,
 				ContaReceberEntity::getContaBancaria,
+				ContaReceberEntity::getIdConcBancaria,
 				ContaReceberEntity::getNumDocConcBancaria,
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(LocalDate.now(), null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), "012345",             null),
-				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnDocumento(), t2.getTrnHistorico())
+				tuple(LocalDate.now(), null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), "012345",      "012345",             null),
+				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnId(), t2.getTrnDocumento(), t2.getTrnHistorico())
 				);
 	}
 	
@@ -585,6 +604,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now())
 				.tituloConciliadoId(contaReceber1.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00123")
 				.trnDocumento("00123")
 				.trnHistorico("Teste de conciliação 123")
 				.build();
@@ -599,6 +619,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnData(LocalDate.now().minusDays(2))
 				.tituloConciliadoId(contaReceber2.getId())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00987")
 				.trnDocumento("00987")
 				.trnHistorico("Teste de conciliação 987")
 				.build();
@@ -632,12 +653,13 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getValorPago,
 				ContaReceberEntity::getFormaPagamento,
 				ContaReceberEntity::getContaBancaria,
+				ContaReceberEntity::getIdConcBancaria,
 				ContaReceberEntity::getNumDocConcBancaria,
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,                 null),
-				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnDocumento(), t2.getTrnHistorico())
+				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,          null,                 null),
+				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnId(), t2.getTrnDocumento(), t2.getTrnHistorico())
 				);
 	}
 	
@@ -667,6 +689,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.tituloConciliadoId(unknownId)
 				.tituloConciliadoDesc(tituloConciliadoDesc)
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00123")
 				.trnDocumento("00123")
 				.trnHistorico("Teste de conciliação 123")
 				.build();
@@ -681,6 +704,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.tituloConciliadoId(contaReceber2.getId())
 				.tituloConciliadoDesc(contaReceber2.getDescricao())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
+				.trnId("00987")
 				.trnDocumento("00987")
 				.trnHistorico("Teste de conciliação 987")
 				.build();
@@ -714,12 +738,13 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getValorPago,
 				ContaReceberEntity::getFormaPagamento,
 				ContaReceberEntity::getContaBancaria,
+				ContaReceberEntity::getIdConcBancaria,
 				ContaReceberEntity::getNumDocConcBancaria,
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(null, null, FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null, null),
-				tuple(null, null, FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null, null)
+				tuple(null, null, FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null, null, null),
+				tuple(null, null, FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null, null, null)
 				);
 		
 	}
