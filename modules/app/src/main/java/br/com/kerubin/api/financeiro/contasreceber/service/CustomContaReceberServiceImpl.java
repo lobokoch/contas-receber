@@ -124,6 +124,8 @@ public class CustomContaReceberServiceImpl extends ContaReceberServiceImpl {
 	@Override
 	public ContaReceberEntity update(UUID id, ContaReceberEntity contaReceberEntity) {
 		ContaReceberEntity beforeUpdateEntity = read(contaReceberEntity.getId());
+		em.detach(beforeUpdateEntity);
+		
 		beforeUpdateEntity = beforeUpdateEntity.clone();
 		
 		ContaReceberEntity entity = super.update(id, contaReceberEntity);
