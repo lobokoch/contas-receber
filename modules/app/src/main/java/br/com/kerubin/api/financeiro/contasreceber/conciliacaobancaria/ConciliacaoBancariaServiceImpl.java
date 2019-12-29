@@ -33,6 +33,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import br.com.kerubin.api.financeiro.contasreceber.FormaPagamento;
+import br.com.kerubin.api.financeiro.contasreceber.entity.cliente.QClienteEntity;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contabancaria.ContaBancariaEntity;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contabancaria.ContaBancariaRepository;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberEntity;
@@ -68,22 +69,25 @@ public class ConciliacaoBancariaServiceImpl implements ConciliacaoBancariaServic
 		JPAQueryFactory query = new JPAQueryFactory(em);
 		
 		QContaReceberEntity qContaReceber = QContaReceberEntity.contaReceberEntity;
+		QClienteEntity qCliente = QClienteEntity.clienteEntity;
 		
 		Map<String, ContaReceberEntity> lastVisitedList = new HashMap<>();
 		
 		conciliacaoBancariaDTO.getTransacoes().forEach(transacao -> {
 			
 			List<String> tokens = getTokens(transacao.getTrnHistorico());
-			BooleanBuilder filtroTokens = new BooleanBuilder();
+			BooleanBuilder filtroDescricaoTokens = new BooleanBuilder();
+			BooleanBuilder filtroClienteTokens = new BooleanBuilder();
 			if (isNotEmpty(tokens)) {
-				tokens.forEach(token -> filtroTokens.or(qContaReceber.descricao.containsIgnoreCase(token)));			
+				tokens.forEach(token -> filtroDescricaoTokens.or(qContaReceber.descricao.containsIgnoreCase(token)));
+				tokens.forEach(token -> filtroClienteTokens.or(qContaReceber.cliente.nome.containsIgnoreCase(token)));
 			}
 			
 			BooleanBuilder filtroDados = new BooleanBuilder();
 			filtroDados
 			.and(qContaReceber.idConcBancaria.eq(transacao.getTrnId()))
 			.or(qContaReceber.valor.eq(transacao.getTrnValor()))
-			.or(filtroTokens); // Faz match com os tokens do histórico do extrato com as descrições das contas.
+			.or(filtroDescricaoTokens); // Faz match com os tokens do histórico do extrato com as descrições das contas.
 			
 			LocalDate dataToRef = transacao.getTrnData();
 			String key = getTrnKey(transacao);
@@ -109,6 +113,7 @@ public class ConciliacaoBancariaServiceImpl implements ConciliacaoBancariaServic
 			
 			List<ContaReceberEntity> contas = query
 					.selectFrom(qContaReceber)
+					.leftJoin(qContaReceber.cliente, qCliente).on(filtroClienteTokens)
 					.where(where)
 					.orderBy(qContaReceber.dataVencimento.asc())
 					.fetch();
