@@ -2,7 +2,7 @@
 domain financeiro
 
 @label("Contas a receber")
-service contas_receber { //xxxx
+service contas_receber { //xxx
 	
 	
 	config {
@@ -54,13 +54,14 @@ service contas_receber { //xxxx
 		label: "Vencimento"
 		listFilter(between: "Vencimento de;Até;Intervalo de tempo")  
 		web(styleClass: "ui-md-2")
-		sort: asc
+		sort(order: asc position: 0)
 		
 		valor: money 
 		label: "Valor da conta"
 		sum(styleClass:"kb-conta-valor-apagar" label:"A")
 		web(styleClass: "ui-md-2")
 		listFilter(between: "Contas com valores de;até;" styleClass: "ui-md-3")
+		sort(order: desc position: 1)
 		
 		formaPagamento: FormaPagamento
 		label: "Forma de pagamento"
@@ -390,7 +391,7 @@ service contas_receber { //xxxx
 		
 		codigo: string
 		label: "Código"
-		autoComplete(data sort:asc)
+		autoComplete(data sort(order: asc))
 		web(styleClass: "ui-md-2")
 		listFilter(many: "Códigos")
 		
