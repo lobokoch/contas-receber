@@ -1,6 +1,6 @@
 /**********************************************************************************************
 Code generated with MKL Plug-in version: 47.8.0
-Code generated at time stamp: 2020-01-13T08:12:19.082
+Code generated at time stamp: 2020-01-22T06:59:33.911
 Copyright: Kerubin - logokoch@gmail.com
 
 WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CODE GENERATION.
@@ -27,6 +27,8 @@ public class Cliente {
 	@Size(max = 255, message = "\"Documento (CNPJ/CPF)\" pode ter no máximo 255 caracteres.")
 	private String cnpjCPF;
 	
+	private Boolean ativo = true;
+	
 	private Boolean deleted = false;
 	
 	
@@ -51,6 +53,10 @@ public class Cliente {
 		return cnpjCPF;
 	}
 	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	
 	public Boolean getDeleted() {
 		return deleted;
 	}
@@ -69,6 +75,10 @@ public class Cliente {
 	
 	public void setCnpjCPF(String cnpjCPF) {
 		this.cnpjCPF = cnpjCPF;
+	}
+	
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 	public void setDeleted(Boolean deleted) {

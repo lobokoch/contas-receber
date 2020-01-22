@@ -43,6 +43,7 @@ CREATE TABLE cliente /* Cliente */  (
 	tipo_pessoa VARCHAR(255) NOT NULL /* tipoPessoa */,
 	nome VARCHAR(255) NOT NULL,
 	cnpj_cpf VARCHAR(255) /* cnpjCPF */,
+	ativo BOOLEAN DEFAULT true,
 	deleted BOOLEAN DEFAULT false
 );
 

@@ -243,7 +243,10 @@ service contas_receber { //xxx
 		listFilter(many: "Nome do cliente")
 		
 		cnpjCPF: string?
-		label: "Documento (CNPJ/CPF)"		
+		label: "Documento (CNPJ/CPF)"
+		
+		ativo: boolean default: true optional
+		label: "Ativo"	
 		
 	}
 	
