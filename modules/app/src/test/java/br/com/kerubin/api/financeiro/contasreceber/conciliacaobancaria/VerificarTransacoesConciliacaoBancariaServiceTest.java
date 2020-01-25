@@ -40,6 +40,7 @@ import br.com.kerubin.api.financeiro.contasreceber.entity.bandeiracartao.Bandeir
 import br.com.kerubin.api.financeiro.contasreceber.entity.cartaocredito.CartaoCreditoEntity;
 import br.com.kerubin.api.financeiro.contasreceber.entity.cartaocredito.CartaoCreditoLookupResult;
 import br.com.kerubin.api.financeiro.contasreceber.entity.cartaocredito.CartaoCreditoRepository;
+import br.com.kerubin.api.financeiro.contasreceber.entity.cliente.ClienteEntity;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contabancaria.ContaBancariaEntity;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contabancaria.ContaBancariaLookupResult;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contabancaria.ContaBancariaRepository;
@@ -51,9 +52,14 @@ import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaRece
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberService;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberServiceImpl;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaEntity;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaListFilterPredicate;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaListFilterPredicateImpl;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaLookupResult;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaRepository;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaService;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaServiceImpl;
 import br.com.kerubin.api.messaging.core.DomainEntityEventsPublisher;
+import br.com.kerubin.api.servicecore.util.CoreUtils;
 
 
 @RunWith(SpringRunner.class)
@@ -87,6 +93,16 @@ public class VerificarTransacoesConciliacaoBancariaServiceTest extends Financeir
 			return new ConciliacaoBancariaServiceImpl();
 		}
 		
+		@Bean
+		public PlanoContaService planoContaService() {
+			return new PlanoContaServiceImpl(); 
+		}
+		
+		@Bean
+		public PlanoContaListFilterPredicate planoContaListFilterPredicate() {
+			return new PlanoContaListFilterPredicateImpl();
+		}
+		
 	}
 	
 	
@@ -110,6 +126,44 @@ public class VerificarTransacoesConciliacaoBancariaServiceTest extends Financeir
 	
 	@Inject
 	private ConciliacaoBancariaService conciliacaoBancariaService;
+	
+	@Test
+	public void testDiscardNotStartsWithTokens() {
+		
+		List<ContaReceberEntity> contas = new ArrayList<>(5); 
+		
+		ContaReceberEntity c = new ContaReceberEntity();
+		c.setDescricao("Conta de energia elétrica");
+		c.setDataVencimento(LocalDate.of(2020, 01, 23));
+		ClienteEntity f = new ClienteEntity();
+		f.setNome("Celesc Santa Catarina");
+		c.setCliente(f);
+		contas.add(c);
+		
+		c = new ContaReceberEntity();
+		c.setDescricao("Bobina de plástico");
+		c.setDataVencimento(LocalDate.of(2020, 01, 24));
+		f = new ClienteEntity();
+		f.setNome("Plastex");
+		c.setCliente(f);
+		contas.add(c);
+		
+		c = new ContaReceberEntity();
+		c.setDescricao("Compra de protetor solar");
+		c.setDataVencimento(LocalDate.of(2020, 01, 25));
+		f = new ClienteEntity();
+		f.setNome("Farmácia catarinense");
+		c.setCliente(f);
+		contas.add(c);
+		
+		List<String> tokens = CoreUtils.getTokens("Celesc Sant. Catarin. Energ. Elétr.");
+		//List<String> tokens = Arrays.asList("celesc", "sant", "catarin", "energ", "elétr");
+		List<ContaReceberEntity> actual = conciliacaoBancariaService.discardNotStartsWithTokens(contas, tokens);
+		
+		assertThat(actual).hasSize(2);
+		assertThat(actual.get(0)).isEqualToComparingFieldByField(contas.get(0));
+		assertThat(actual.get(1)).isEqualToComparingFieldByField(contas.get(2));
+	}
 	
 	@Test
 	public void testVerificarTransacoes_Primeira() {

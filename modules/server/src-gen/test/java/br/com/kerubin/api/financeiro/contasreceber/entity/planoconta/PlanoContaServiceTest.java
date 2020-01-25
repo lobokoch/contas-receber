@@ -1,7 +1,6 @@
 /**********************************************************************************************
-Code generated with MKL Plug-in version: 47.8.0
-Code generated at time stamp: 2020-01-22T06:59:33.911
-Copyright: Kerubin - logokoch@gmail.com
+Code generated with MKL Plug-in version: 55.0.3
+Copyright: Kerubin - kerubin.platform@gmail.com
 
 WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CODE GENERATION.
 ***********************************************************************************************/
@@ -85,7 +84,7 @@ public class PlanoContaServiceTest extends FinanceiroContasReceberBaseEntityTest
 		planoConta.setId(java.util.UUID.randomUUID());
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
 		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		
 		PlanoContaEntity planoContaEntityParam = newPlanoContaEntity();
@@ -162,7 +161,7 @@ public class PlanoContaServiceTest extends FinanceiroContasReceberBaseEntityTest
 		
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
 		planoConta.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		
 		PlanoContaEntity planoContaEntityParam = newPlanoContaEntity();
@@ -198,7 +197,7 @@ public class PlanoContaServiceTest extends FinanceiroContasReceberBaseEntityTest
 		
 		planoConta.setCodigo(generateRandomString(255));
 		planoConta.setDescricao(generateRandomString(255));
-		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
+		planoConta.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
 		planoConta.setAtivo(true);
 		PlanoContaEntity planoContaEntity = planoContaService.update(id, planoContaDTOConverter.convertDtoToEntity(planoConta));
 		em.flush();
@@ -485,7 +484,7 @@ public class PlanoContaServiceTest extends FinanceiroContasReceberBaseEntityTest
 		planoContaEntity.setId(java.util.UUID.randomUUID());
 		planoContaEntity.setCodigo(generateRandomString(255));
 		planoContaEntity.setDescricao(generateRandomString(255));
-		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.DESPESA);
+		planoContaEntity.setTipoFinanceiro(TipoPlanoContaFinanceiro.RECEITA);
 		planoContaEntity.setTipoReceitaDespesa(TipoReceitaDespesa.VARIAVEL);
 		planoContaEntity.setPlanoContaPai(null);
 		planoContaEntity.setAtivo(true);

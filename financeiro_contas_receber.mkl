@@ -93,7 +93,7 @@ service contas_receber { //xxx
 		//--
 		dataPagamento: date? 
 		label: "Data pagamento"
-		listFilter(isNotNull_isNull: "Pagas;Em aberto" default:"isNull") 
+		listFilter(isNotNull_isNull: "Pagas;Em aberto" default:"isNull" /*styleClass: "ui-md-4"*/ containerStyleClass: "ui-md-4") 
 		web(styleClass: "ui-md-2")
 		publishedInEvents
 		
@@ -144,7 +144,7 @@ service contas_receber { //xxx
 		label: "Id da conciliação bancária"
 		grid(hidden) 
 		web(styleClass: "ui-md-4" readOnly)
-		listFilter(isNotNull: "Baixa via conc. banc." containerStyleClass: "ui-md-6")
+		listFilter(isNotNull: "Baixa via conc. banc." containerStyleClass: "ui-md-4")
 		
 		histConcBancaria: string?
 		label: "Histórico da conciliação bancária"
@@ -167,7 +167,7 @@ service contas_receber { //xxx
 		
 		agrupador: string ? 
 		label: "Identificador para agrupamento da conta"
-		listFilter(many: "Agrupador:")
+		listFilter(many: "Agrupador:" containerStyleClass: "ui-md-6")
 		grid(hidden) 
 		web(styleClass: "ui-md-4")
 		
