@@ -4,7 +4,7 @@ domain financeiro
 @messagingEventHandler
 @webAnalitycs(tagId: "UA-157001792-1" onlyInProduction: false)
 @label("Contas a receber")
-service contas_receber { //xxxx
+service contas_receber { //xxx
 	
 	
 	config {

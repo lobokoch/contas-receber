@@ -54,8 +54,12 @@ import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaRece
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberService;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contareceber.ContaReceberServiceImpl;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaEntity;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaListFilterPredicate;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaListFilterPredicateImpl;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaLookupResult;
 import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaRepository;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaService;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaServiceImpl;
 import br.com.kerubin.api.messaging.core.DomainEntityEventsPublisher;
 
 
@@ -82,6 +86,16 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 		@Bean
 		public ContaReceberDTOConverter contaReceberDTOConverter() {
 			return new ContaReceberDTOConverter();
+		}
+		
+		@Bean 
+		public PlanoContaListFilterPredicate planoContaListFilterPredicate() {
+			return new PlanoContaListFilterPredicateImpl();
+		}
+		
+		@Bean
+		public PlanoContaService planoContaService() {
+			return new PlanoContaServiceImpl();
 		}
 		
 		@Bean
@@ -170,8 +184,8 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ConciliacaoTransacaoDTO::getSituacaoConciliacaoTrn
 				)
 		.contains(
-				tuple(contaReceber1.getId(), contaReceber1.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/"Sucesso", LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER),
-				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/"Sucesso", LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
+				tuple(contaReceber1.getId(), contaReceber1.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/null, LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER),
+				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/null, LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
 				);
 		
 		
@@ -250,8 +264,8 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ConciliacaoTransacaoDTO::getSituacaoConciliacaoTrn
 				)
 		.contains(
-				tuple(unknownId,           null,                       /*getConciliadoComErro=*/true,  /*getConciliadoMsg=*/erroMsg,   null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
-				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/"Sucesso", LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
+				tuple(unknownId,           null,                       /*getConciliadoComErro=*/    true,  /*getConciliadoMsg=*/erroMsg, null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
+				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/null,    LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
 				);
 		
 		
@@ -328,8 +342,8 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ConciliacaoTransacaoDTO::getSituacaoConciliacaoTrn
 				)
 		.contains(
-				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/true,  /*getConciliadoMsg=*/erroMsg,   null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
-				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/"Sucesso", LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
+				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/  true,  /*getConciliadoMsg=*/erroMsg,  null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
+				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/null,     LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
 				);
 		
 		
@@ -405,8 +419,8 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ConciliacaoTransacaoDTO::getSituacaoConciliacaoTrn
 				)
 		.contains(
-				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/true,  /*getConciliadoMsg=*/erroMsg,   null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
-				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/"Sucesso", LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
+				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/  true,  /*getConciliadoMsg=*/erroMsg, null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
+				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/null,    LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
 				);
 		
 		
@@ -482,8 +496,8 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ConciliacaoTransacaoDTO::getSituacaoConciliacaoTrn
 				)
 		.contains(
-				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/true,  /*getConciliadoMsg=*/erroMsg,   null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
-				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/"Sucesso", LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
+				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/  true,  /*getConciliadoMsg=*/erroMsg, null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
+				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/null,    LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
 				);
 		
 		
@@ -563,8 +577,8 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ConciliacaoTransacaoDTO::getSituacaoConciliacaoTrn
 				)
 		.contains(
-				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/true,  /*getConciliadoMsg=*/erroMsg,   null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
-				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/"Sucesso", LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
+				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/  true,  /*getConciliadoMsg=*/erroMsg, null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
+				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/null,    LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
 				);
 		
 		
@@ -603,6 +617,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnTipo(TipoTransacao.CREDITO)
 				.trnData(LocalDate.now())
 				.tituloConciliadoId(contaReceber1.getId())
+				.tituloConciliadoDesc(contaReceber1.getDescricao())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
 				.trnId("00123")
 				.trnDocumento("00123")
@@ -618,6 +633,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				.trnTipo(TipoTransacao.CREDITO)
 				.trnData(LocalDate.now().minusDays(2))
 				.tituloConciliadoId(contaReceber2.getId())
+				.tituloConciliadoDesc(contaReceber2.getDescricao())
 				.situacaoConciliacaoTrn(SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER)
 				.trnId("00987")
 				.trnDocumento("00987")
@@ -642,8 +658,8 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ConciliacaoTransacaoDTO::getSituacaoConciliacaoTrn
 				)
 		.contains(
-				tuple(contaReceber1.getId(), null,                       /*getConciliadoComErro=*/true,  /*getConciliadoMsg=*/erroMsg,   null,            SituacaoConciliacaoTrn.CONCILIAR_CONTAS_RECEBER),
-				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/"Sucesso", LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
+				tuple(contaReceber1.getId(), contaReceber1.getDescricao(), /*getConciliadoComErro=*/false,  /*getConciliadoMsg=*/erroMsg, LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER),
+				tuple(contaReceber2.getId(), contaReceber2.getDescricao(), /*getConciliadoComErro=*/false, /*getConciliadoMsg=*/ null,     LocalDate.now(), SituacaoConciliacaoTrn.CONCILIADO_CONTAS_RECEBER)
 				);
 		
 		
@@ -658,7 +674,7 @@ public class ConciliacaoBancariaServiceTest extends FinanceiroContasReceberBaseE
 				ContaReceberEntity::getHistConcBancaria
 				)
 		.contains(
-				tuple(null,            null,             FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), null,          null,                 null),
+				tuple(t1.getTrnData(), t1.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t1.getTrnId(), t1.getTrnDocumento(), t1.getTrnHistorico()),
 				tuple(t2.getTrnData(), t2.getTrnValor(), FormaPagamento.CONTA_BANCARIA, newContaBancariaConciliacao(), t2.getTrnId(), t2.getTrnDocumento(), t2.getTrnHistorico())
 				);
 	}
