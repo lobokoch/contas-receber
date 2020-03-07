@@ -130,28 +130,6 @@ public class VerificarTransacoesConciliacaoBancariaServiceTest extends Financeir
 	private ConciliacaoBancariaService conciliacaoBancariaService;
 	
 	@Test
-	public void testDay() {
-		long dif = ChronoUnit.DAYS.between(LocalDate.of(2019, 8, 4), LocalDate.of(2019, 7, 4));
-		System.out.println(dif);
-		
-		dif = ChronoUnit.DAYS.between(LocalDate.of(2019, 7, 4), LocalDate.of(2019, 8, 4));
-		System.out.println(dif);
-		
-		dif = ChronoUnit.DAYS.between(LocalDate.of(2019, 8, 4), LocalDate.of(2019, 8, 3));
-		System.out.println(dif);
-		
-		dif = ChronoUnit.DAYS.between(LocalDate.of(2019, 8, 3), LocalDate.of(2019, 8, 4));
-		System.out.println(dif);
-		
-		dif = ChronoUnit.DAYS.between(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31));
-		System.out.println(dif);
-		
-		dif = ChronoUnit.DAYS.between(LocalDate.of(2019, 8, 4), LocalDate.of(2019, 8, 4));
-		System.out.println(dif);
-		
-	}
-	
-	@Test
 	public void testScores() {
 		
 		List<ContaReceberEntity> contas = new ArrayList<>(); 
