@@ -7,10 +7,10 @@ WARNING: DO NOT CHANGE THIS CODE BECAUSE THE CHANGES WILL BE LOST IN THE NEXT CO
 
 package br.com.kerubin.api.financeiro.contasreceber.entity.contareceber;
 
-import javax.validation.constraints.NotNull;
-import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaLookupResult;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+import br.com.kerubin.api.financeiro.contasreceber.entity.planoconta.PlanoContaLookupResult;
 import br.com.kerubin.api.financeiro.contasreceber.FormaPagamento;
 import br.com.kerubin.api.financeiro.contasreceber.entity.contabancaria.ContaBancariaLookupResult;
 import br.com.kerubin.api.financeiro.contasreceber.entity.cartaocredito.CartaoCreditoLookupResult;
@@ -20,17 +20,17 @@ public class ContaReceber {
 
 	private java.util.UUID id;
 	
-	@NotNull(message="\"Plano de contas\" é obrigatório.")
-	private PlanoContaLookupResult planoContas;
-	
 	@NotBlank(message="\"Descrição da conta\" é obrigatório.")
 	@Size(max = 255, message = "\"Descrição da conta\" pode ter no máximo 255 caracteres.")
 	private String descricao;
 	
-	@NotNull(message="\"Vencimento\" é obrigatório.")
+	@NotNull(message="\"Plano de contas\" é obrigatório.")
+	private PlanoContaLookupResult planoContas;
+	
+	@NotNull(message="\"Data de vencimento\" é obrigatório.")
 	private java.time.LocalDate dataVencimento;
 	
-	@NotNull(message="\"Valor da conta\" é obrigatório.")
+	@NotNull(message="\"Valor total\" é obrigatório.")
 	private java.math.BigDecimal valor;
 	
 	@NotNull(message="\"Forma de pagamento\" é obrigatório.")
@@ -42,6 +42,11 @@ public class ContaReceber {
 	
 	@Size(max = 255, message = "\"Dados complementares\" pode ter no máximo 255 caracteres.")
 	private String outrosDescricao;
+	
+	private ClienteLookupResult cliente;
+	
+	@NotNull(message="\"Conta recebida\" é obrigatório.")
+	private Boolean contaPaga = false;
 	
 	private java.time.LocalDate dataPagamento;
 	
@@ -55,10 +60,7 @@ public class ContaReceber {
 	
 	private java.math.BigDecimal valorPago;
 	
-	private ClienteLookupResult cliente;
-	
-	@Size(max = 255, message = "\"Documento\" pode ter no máximo 255 caracteres.")
-	private String numDocumento;
+	private Boolean maisOpcoes = false;
 	
 	@Size(max = 255, message = "\"Id da conciliação bancária\" pode ter no máximo 255 caracteres.")
 	private String idConcBancaria;
@@ -68,6 +70,9 @@ public class ContaReceber {
 	
 	@Size(max = 255, message = "\"Documento da conciliação bancária\" pode ter no máximo 255 caracteres.")
 	private String numDocConcBancaria;
+	
+	@Size(max = 255, message = "\"Documento\" pode ter no máximo 255 caracteres.")
+	private String numDocumento;
 	
 	@Size(max = 1000, message = "\"Observações\" pode ter no máximo 1000 caracteres.")
 	private String observacoes;
@@ -95,12 +100,12 @@ public class ContaReceber {
 		return id;
 	}
 	
-	public PlanoContaLookupResult getPlanoContas() {
-		return planoContas;
-	}
-	
 	public String getDescricao() {
 		return descricao;
+	}
+	
+	public PlanoContaLookupResult getPlanoContas() {
+		return planoContas;
 	}
 	
 	public java.time.LocalDate getDataVencimento() {
@@ -127,6 +132,14 @@ public class ContaReceber {
 		return outrosDescricao;
 	}
 	
+	public ClienteLookupResult getCliente() {
+		return cliente;
+	}
+	
+	public Boolean getContaPaga() {
+		return contaPaga;
+	}
+	
 	public java.time.LocalDate getDataPagamento() {
 		return dataPagamento;
 	}
@@ -151,12 +164,8 @@ public class ContaReceber {
 		return valorPago;
 	}
 	
-	public ClienteLookupResult getCliente() {
-		return cliente;
-	}
-	
-	public String getNumDocumento() {
-		return numDocumento;
+	public Boolean getMaisOpcoes() {
+		return maisOpcoes;
 	}
 	
 	public String getIdConcBancaria() {
@@ -169,6 +178,10 @@ public class ContaReceber {
 	
 	public String getNumDocConcBancaria() {
 		return numDocConcBancaria;
+	}
+	
+	public String getNumDocumento() {
+		return numDocumento;
 	}
 	
 	public String getObservacoes() {
@@ -199,12 +212,12 @@ public class ContaReceber {
 		this.id = id;
 	}
 	
-	public void setPlanoContas(PlanoContaLookupResult planoContas) {
-		this.planoContas = planoContas;
-	}
-	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public void setPlanoContas(PlanoContaLookupResult planoContas) {
+		this.planoContas = planoContas;
 	}
 	
 	public void setDataVencimento(java.time.LocalDate dataVencimento) {
@@ -231,6 +244,14 @@ public class ContaReceber {
 		this.outrosDescricao = outrosDescricao;
 	}
 	
+	public void setCliente(ClienteLookupResult cliente) {
+		this.cliente = cliente;
+	}
+	
+	public void setContaPaga(Boolean contaPaga) {
+		this.contaPaga = contaPaga;
+	}
+	
 	public void setDataPagamento(java.time.LocalDate dataPagamento) {
 		this.dataPagamento = dataPagamento;
 	}
@@ -255,12 +276,8 @@ public class ContaReceber {
 		this.valorPago = valorPago;
 	}
 	
-	public void setCliente(ClienteLookupResult cliente) {
-		this.cliente = cliente;
-	}
-	
-	public void setNumDocumento(String numDocumento) {
-		this.numDocumento = numDocumento;
+	public void setMaisOpcoes(Boolean maisOpcoes) {
+		this.maisOpcoes = maisOpcoes;
 	}
 	
 	public void setIdConcBancaria(String idConcBancaria) {
@@ -273,6 +290,10 @@ public class ContaReceber {
 	
 	public void setNumDocConcBancaria(String numDocConcBancaria) {
 		this.numDocConcBancaria = numDocConcBancaria;
+	}
+	
+	public void setNumDocumento(String numDocumento) {
+		this.numDocumento = numDocumento;
 	}
 	
 	public void setObservacoes(String observacoes) {

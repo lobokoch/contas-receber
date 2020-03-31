@@ -18,7 +18,7 @@ public class ContaReceberMakeCopies {
 	private java.util.UUID id;
 	
 	@Min(value = 1, message = "A quantidade de cópias não pode ser menor que 1.")
-	@Max(value = 60, message = "A quantidade de cópias não pode ser maior que 60.")
+	@Max(value = 120, message = "A quantidade de cópias não pode ser maior que 120.")
 	private Long numberOfCopies;
 	
 	@Min(value = 1, message = "O intervalo não pode ser menor que 1.")

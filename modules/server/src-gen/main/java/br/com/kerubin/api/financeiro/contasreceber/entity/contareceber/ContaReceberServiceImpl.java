@@ -34,10 +34,12 @@ import br.com.kerubin.api.financeiro.contasreceber.entity.cliente.ClienteReposit
 import java.util.Collection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import java.util.Optional;
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.time.LocalDate;
+import java.text.MessageFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.temporal.ChronoUnit;
@@ -71,6 +73,7 @@ public class ContaReceberServiceImpl implements ContaReceberService {
 	@Transactional
 	@Override
 	public ContaReceberEntity create(ContaReceberEntity contaReceberEntity) {
+		doRulesFormBeforeSave(contaReceberEntity);
 		return contaReceberRepository.save(contaReceberEntity);
 	}
 	
@@ -83,6 +86,7 @@ public class ContaReceberServiceImpl implements ContaReceberService {
 	@Transactional
 	@Override
 	public ContaReceberEntity update(java.util.UUID id, ContaReceberEntity contaReceberEntity) {
+		doRulesFormBeforeSave(contaReceberEntity);
 		// ContaReceberEntity entity = getContaReceberEntity(id);
 		// BeanUtils.copyProperties(contaReceberEntity, entity, "id");
 		// entity = contaReceberRepository.save(entity);
@@ -91,6 +95,25 @@ public class ContaReceberServiceImpl implements ContaReceberService {
 		
 		return entity;
 	}
+	
+	private void doRulesFormBeforeSave(ContaReceberEntity contaReceber) {
+		
+		if ((Boolean.TRUE.equals(contaReceber.getContaPaga())) && Objects.isNull(contaReceber.getDataPagamento())) {
+			throw new IllegalStateException("A data do recebimento deve ser informada para receber a conta.");
+		}
+		
+		
+		if ((Boolean.TRUE.equals(contaReceber.getContaPaga())) && contaReceber.getDataPagamento().isAfter(LocalDate.now())) {
+			throw new IllegalStateException(MessageFormat.format("A data do recebimento não pode ser maior do que a data de hoje ({0}).", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+		}
+		
+		
+		if ((Boolean.TRUE.equals(contaReceber.getContaPaga())) && Objects.isNull(contaReceber.getValorPago())) {
+			throw new IllegalStateException("O valor total recebido deve ser informado para poder receber a conta.");
+		}
+		
+	}
+	
 	
 	@Transactional
 	@Override
