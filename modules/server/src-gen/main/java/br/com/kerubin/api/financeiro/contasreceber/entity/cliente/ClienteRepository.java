@@ -9,13 +9,20 @@ package br.com.kerubin.api.financeiro.contasreceber.entity.cliente;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import java.util.Collection;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Collection;
 import org.springframework.data.repository.query.Param;
 
 @Transactional(readOnly = true)
 public interface ClienteRepository extends JpaRepository<ClienteEntity, java.util.UUID>, QuerydslPredicateExecutor<ClienteEntity> {
+	
+	@Transactional
+	@Modifying
+	@Query("delete from ClienteEntity ce where ce.id in ?1")
+	void deleteInBulk(java.util.List<java.util.UUID> idList);
+	
 	
 	// WARNING: supports only where clause with like for STRING fields. For relationships entities will get the first string autocomplete key field name.
 	@Query("select distinct ac.id as id, ac.nome as nome from ClienteEntity ac where ( upper(ac.nome) like upper(concat('%', :query, '%')) ) order by 1 asc")

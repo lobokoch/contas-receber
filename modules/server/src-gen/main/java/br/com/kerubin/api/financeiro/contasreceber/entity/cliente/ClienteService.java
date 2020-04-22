@@ -22,6 +22,8 @@ public interface ClienteService {
 	
 	public void delete(java.util.UUID id);
 	
+	public void deleteInBulk(java.util.List<java.util.UUID> idList);
+	
 	public Page<ClienteEntity> list(ClienteListFilter clienteListFilter, Pageable pageable);
 	
 	public Collection<ClienteAutoComplete> autoComplete(String query);

@@ -127,6 +127,16 @@ public class ContaReceberServiceImpl implements ContaReceberService {
 		
 	}
 	
+	@Transactional
+	@Override
+	public void deleteInBulk(java.util.List<java.util.UUID> idList) {
+		// Delete it.
+		contaReceberRepository.deleteInBulk(idList);
+		
+		// Force flush to the database, for relationship validation and must throw exception because of this here.
+		contaReceberRepository.flush();
+	}
+	
 	
 	@Transactional(readOnly = true)
 	@Override

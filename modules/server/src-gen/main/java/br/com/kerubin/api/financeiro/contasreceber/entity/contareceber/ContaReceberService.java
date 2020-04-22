@@ -26,6 +26,8 @@ public interface ContaReceberService {
 	
 	public void delete(java.util.UUID id);
 	
+	public void deleteInBulk(java.util.List<java.util.UUID> idList);
+	
 	public Page<ContaReceberEntity> list(ContaReceberListFilter contaReceberListFilter, Pageable pageable);
 	
 	public Collection<ContaReceberAutoComplete> autoComplete(String query);
