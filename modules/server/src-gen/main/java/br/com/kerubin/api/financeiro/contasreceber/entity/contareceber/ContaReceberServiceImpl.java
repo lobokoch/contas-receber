@@ -98,6 +98,11 @@ public class ContaReceberServiceImpl implements ContaReceberService {
 	
 	private void doRulesFormBeforeSave(ContaReceberEntity contaReceber) {
 		
+		if ((!Boolean.TRUE.equals(contaReceber.getContaPaga())) && Objects.nonNull(contaReceber.getDataPagamento())) {
+			throw new IllegalStateException("Foi informada a data de recebimento para a conta, porém ela não foi marcada como conta recebida.");
+		}
+		
+		
 		if ((Boolean.TRUE.equals(contaReceber.getContaPaga())) && Objects.isNull(contaReceber.getDataPagamento())) {
 			throw new IllegalStateException("A data do recebimento deve ser informada para receber a conta.");
 		}

@@ -538,6 +538,8 @@ public class ConciliacaoBancariaServiceImpl implements ConciliacaoBancariaServic
 			
 			conta.setDataPagamento(transacao.getTrnData());
 			conta.setValorPago(transacao.getTrnValor());
+			conta.setContaPaga(true);
+			
 			conta.setDescricao(transacao.getTituloConciliadoDesc());
 			conta.setFormaPagamento(FormaPagamento.CONTA_BANCARIA);
 			conta.setContaBancaria(contaBancariaEntity);

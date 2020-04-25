@@ -221,7 +221,11 @@ service contas_receber { //xxxx
 						buttonBack(tooltip: "Abrir caixa" label: "Abrir caixa" cssClass: "ui-button-success" icon: "pi pi-lock-open")						
 					)
 				)*/
-				
+			
+			with(form.beforeSave)
+			.apply(error('Foi informada a data de recebimento para a conta, porém ela não foi marcada como conta recebida.'))
+			.when(contaPaga.isNotTrue and dataPagamento.isNotNull)
+			
 			with(form.beforeSave)
 			.apply(error('A data do recebimento deve ser informada para receber a conta.'))
 			.when(contaPaga.isTrue and dataPagamento.isNull)
