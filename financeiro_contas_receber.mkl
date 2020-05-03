@@ -46,6 +46,7 @@ service contas_receber { //xxxx
 		web(styleClass: "ui-md-6")
 		publishedInEvents
 		help(text: "Informe uma descrição para esta conta a receber, exemplo: Vendas de Tupperware.")
+		unaccent
 		
 		planoContas: refers PlanoConta manyToOne
 		// listFilter(many: "Plano de Contas")
@@ -328,6 +329,7 @@ service contas_receber { //xxxx
 		nome: string
 		label: "Nome"
 		listFilter(many: "Nome do cliente")
+		unaccent
 		
 		cnpjCPF: string?
 		label: "Documento (CNPJ/CPF)"
@@ -352,6 +354,7 @@ service contas_receber { //xxxx
 		autoComplete
 		listFilter(many: "Nome do(s) banco(s)")
 		web(styleClass: "ui-md-8")
+		unaccent
 	}
 	
 	@externalEntity
@@ -376,6 +379,7 @@ service contas_receber { //xxxx
 		autoComplete
 		label: "Endereço/localização da agência"
 		web(styleClass: "ui-md-6")
+		unaccent
 		
 	}
 	
@@ -389,6 +393,7 @@ service contas_receber { //xxxx
 		label: "Bandeira do cartão"
 		listFilter(many: "Bandeira(s)")
 		web(styleClass: "ui-md-12")
+		unaccent
 	}
 	
 	@externalEntity
@@ -400,6 +405,7 @@ service contas_receber { //xxxx
 		label: "Nome do títular da conta"
 		autoComplete
 		web(styleClass: "ui-md-6")
+		unaccent
 		
 		agencia: refers AgenciaBancaria manyToOne
 		web(styleClass: "ui-md-4")
@@ -447,6 +453,7 @@ service contas_receber { //xxxx
 		autoComplete
 		label: "Nome do títular do cartão"
 		web(styleClass: "ui-md-6")
+		unaccent
 		
 		//--
 		numeroCartao: string[50] 
@@ -490,6 +497,7 @@ service contas_receber { //xxxx
 		autoComplete
 		web(styleClass: "ui-md-10")		
 		listFilter(many: "Descrições")
+		unaccent
 		
 		tipoFinanceiro: TipoPlanoContaFinanceiro
 		

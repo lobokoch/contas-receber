@@ -25,9 +25,10 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, java.uti
 	
 	
 	// WARNING: supports only where clause with like for STRING fields. For relationships entities will get the first string autocomplete key field name.
-	@Query("select distinct ac.id as id, ac.nome as nome from ClienteEntity ac where ( upper(ac.nome) like upper(concat('%', :query, '%')) ) order by 1 asc")
+	@Query("select distinct ac.id as id, ac.nome as nome from ClienteEntity ac where ( upper(unaccent(ac.nome)) like upper(concat('%', unaccent(:query), '%')) ) order by 1 asc")
 	Collection<ClienteAutoComplete> autoComplete(@Param("query") String query);
+	
 	// WARNING: supports only where clause with like for STRING fields. For relationships entities will get the first string autocomplete key field name.
-	@Query("select distinct ac.nome as nome from ClienteEntity ac where ( upper(ac.nome) like upper(concat('%', :query, '%')) ) order by 1 asc")
+	@Query("select distinct ac.nome as nome from ClienteEntity ac where ( upper(unaccent(ac.nome)) like upper(concat('%', unaccent(:query), '%')) ) order by 1 asc")
 	Collection<ClienteNomeAutoComplete> clienteNomeAutoComplete(@Param("query") String query);
 }
